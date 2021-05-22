@@ -1,5 +1,10 @@
-class ClientsController < ApplicationController
+class Api::V1::ClientsController < ApplicationController
   before_action :set_client, only: [:show, :update, :destroy]
+
+  def by_name
+    @client = Client.find_by(name: params[:name])
+    render json: @client
+  end
 
   # GET /clients
   def index
