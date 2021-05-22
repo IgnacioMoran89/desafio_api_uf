@@ -1,16 +1,17 @@
 class Api::V1::UfsController < ApplicationController
- 
+  include ActionController::HttpAuthentication::Basic::ControllerMethods
+http_basic_authenticate_with name: "juan" , password: "1234" , except:
+:index
 
   def by_date #llama por fecha según el desafío (para el endpoint)
-    @client = Client.find_by(name:request.headers["X-CLIENTE"])
-    
-    #@client.consult += 1 #mi atributo consult va aumentando en uno
-    #@client.save #lo guarda en mi instancia
-    @uf = Uf.find_by(date: params[:date]) #buscar por fecha dentro de los parámetros que están en la ruta
-
-    render json: @uf
+      @client = Client.find_by(name:request.headers["X-CLIENTE"])
+      @client.consult += 1 #mi atributo consult va aumentando en uno
+      @client.save #lo guarda en mi instancia
+      @uf = Uf.find_by(date: params[:date]) #buscar por fecha dentro de los parámetros que están en la ruta
+      render json: @uf
 
   end
+  
   # GET /ufs
   def index
     @ufs = Uf.all
